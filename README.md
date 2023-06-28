@@ -6,7 +6,7 @@
 ![Zastinian's GitHub stats](https://stats.hedystia.com/api?username=Zastinian)
 ```
 
-![Zastinian's GitHub stats](http://localhost:3000/api?username=Zastinian)
+![Zastinian's GitHub stats](https://stats.hedystia.com/api?username=Zastinian)
 
 ---
 
