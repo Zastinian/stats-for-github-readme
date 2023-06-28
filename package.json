@@ -1,0 +1,44 @@
+{
+  "name": "stats-for-github-readme",
+  "version": "1.0.0",
+  "description": "GitHub's Stats in SVG",
+  "main": "src/server.ts",
+  "scripts": {
+    "dev": "nodemon ./src/server.ts",
+    "build": "tsc",
+    "start": "node ./dist/server.js"
+  },
+  "author": "contact@zastinian.com",
+  "license": "Apache-2.0",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Zastinian/stats-for-github-readme.git"
+  },
+  "keywords": [
+    "github-readme-stats",
+    "github-stats",
+    "readme-stats",
+    "readme",
+    "github",
+    "stats",
+    "stats-for-github-readme"
+  ],
+  "bugs": {
+    "url": "https://github.com/Zastinian/stats-for-github-readme/issues"
+  },
+  "homepage": "https://github.com/Zastinian/stats-for-github-readme#readme",
+  "dependencies": {
+    "axios": "^0.21.0",
+    "dotenv": "^16.0.1",
+    "express": "^4.18.1",
+    "millify": "^4.0.0",
+    "node-base64-image": "^2.0.1"
+  },
+  "devDependencies": {
+    "@types/express": "^4.17.13",
+    "@types/node": "^18.0.3",
+    "nodemon": "^2.0.19",
+    "ts-node": "^10.8.2",
+    "typescript": "^4.7.4"
+  }
+}
