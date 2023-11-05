@@ -3,7 +3,7 @@ const app = express();
 import readmeStats from "./api/index";
 
 app.get("/", (req, res) => {
-  res.redirect("https://docs.hedystia.com/docs/category/github-stats");
+  res.redirect("https://docs.hedystia.com/stats/start");
 });
 app.use("/api", readmeStats);
 
