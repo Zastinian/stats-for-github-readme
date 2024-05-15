@@ -1,4 +1,4 @@
-const style = (theme: string) => {
+const style = (theme?: string) => {
   switch (theme) {
     case "default":
       return {

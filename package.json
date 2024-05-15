@@ -4,9 +4,11 @@
   "description": "GitHub's Stats in SVG",
   "main": "src/server.ts",
   "scripts": {
-    "dev": "nodemon ./src/server.ts",
-    "build": "tsc",
-    "start": "node ./dist/server.js"
+    "dev": "bun run --watch src/server.ts",
+    "build": "bun build --compile --target=bun-linux-x64 src/server.ts --outfile stats",
+    "build:windows": "bun build --compile --target=bun-windows-x64 src/server.ts --outfile stats",
+    "start": "./stats",
+    "start:windows": "./stats.exe"
   },
   "author": "contact@zastinian.com",
   "license": "Apache-2.0",
@@ -28,17 +30,14 @@
   },
   "homepage": "https://github.com/Zastinian/stats-for-github-readme#readme",
   "dependencies": {
+    "@elysiajs/html": "^1.0.2",
     "axios": "^1.6.8",
-    "dotenv": "^16.4.5",
-    "express": "^4.19.1",
+    "elysia": "^1.0.20",
     "millify": "^6.1.0",
     "node-base64-image": "^2.0.6"
   },
   "devDependencies": {
-    "@types/express": "^4.17.21",
-    "@types/node": "^20.11.30",
-    "nodemon": "^3.1.0",
-    "ts-node": "^10.9.2",
-    "typescript": "^5.4.3"
+    "bun-types": "latest",
+    "typescript": "^5.4.5"
   }
 }

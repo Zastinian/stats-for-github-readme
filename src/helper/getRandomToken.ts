@@ -1,5 +1,3 @@
-import "dotenv/config";
-
 function getRandomToken(bearerHeader: boolean): string {
   let getEnvs: any = process.env;
   let getGhEnv: any = Object.keys(getEnvs).filter((key) => key.startsWith("GH_"));

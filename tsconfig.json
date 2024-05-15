@@ -1,12 +1,14 @@
 {
   "compilerOptions": {
-    "target": "es6",
-    "module": "commonjs",
+    "lib": ["ESNext", "DOM"],
+    "target": "ESNext",
+    "module": "ESNext",
     "outDir": "./dist",
+    "moduleResolution": "bundler",
     "rootDir": "./src",
     "strict": true,
-    "moduleResolution": "node",
-    "esModuleInterop": true
+    "esModuleInterop": true,
+    "types": ["bun-types"]
   },
   "exclude": ["./node_modules"]
 }

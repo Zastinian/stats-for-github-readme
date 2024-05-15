@@ -1,8 +1,8 @@
-const computeThisYearCommits = (contributions: {contributionCalendar: {totalContributions: any}}) => {
+const computeThisYearCommits = (contributions: { contributionCalendar: { totalContributions: any } }) => {
   return contributions.contributionCalendar.totalContributions;
 };
 
-const computeThisMonthCommits = (contributions: {contributionCalendar: {months: string | any[]; weeks: string | any[]}}) => {
+const computeThisMonthCommits = (contributions: { contributionCalendar: { months: string | any[]; weeks: string | any[] } }) => {
   const monthLength = contributions.contributionCalendar.months.length - 1;
 
   let monthWeeks = contributions.contributionCalendar.months[monthLength].totalWeeks;
@@ -24,7 +24,7 @@ const computeThisMonthCommits = (contributions: {contributionCalendar: {months: 
   return collectTotalCommits;
 };
 
-const computeThisWeekCommits = (contributions: {contributionCalendar: {weeks: string | any[]}}) => {
+const computeThisWeekCommits = (contributions: { contributionCalendar: { weeks: string | any[] } }) => {
   const weeksLength = contributions.contributionCalendar.weeks.length - 1;
   const weekDays = contributions.contributionCalendar.weeks[weeksLength].contributionDays;
   const weekDaysLength = weekDays.length - 1;

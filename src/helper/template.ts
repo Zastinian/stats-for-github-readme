@@ -1,5 +1,5 @@
-import type {GetData} from "./getData";
-import type {UiConfig} from "../api/index";
+import type { GetData } from "./getData";
+import type { UiConfig } from "../api/index";
 import ComputeContributions from "./data/ComputeContributions";
 import ContributionRatings from "./data/ContributionRatings";
 
@@ -15,9 +15,9 @@ export default function template(data: GetData, uiConfig: UiConfig): string {
   ratings.setIssues(computedContribution.issues);
   ratings.setCodeReviews(computedContribution.codeReviews);
 
-  const {rank, progress} = ratings.calculateRating();
+  const { rank, progress } = ratings.calculateRating();
 
-  var card = `<svg width="495" height="195" viewBox="0 0 495 195" fill="none" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+  const card = `<svg width="495" height="195" viewBox="0 0 495 195" fill="none" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
      <style>
         .rating-letter-sign {
           font-family: "Segoe UI", Roboto, Ubuntu, "Helvetica Neue", sans-serif;

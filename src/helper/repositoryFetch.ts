@@ -12,7 +12,7 @@ export default async function repositoryFetch(username: string, totalpage: numbe
   let forks = 0;
   let openedIssues = 0;
 
-  await Promise.all(Array.from({length: totalpage}, async (_, i) => await getPerPageReposData(username, i + 1))).then((data: any) => {
+  await Promise.all(Array.from({ length: totalpage }, async (_, i) => await getPerPageReposData(username, i + 1))).then((data: any) => {
     data.forEach((repo: any) => {
       stars += repo.stars;
       forks += repo.forks;

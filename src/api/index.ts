@@ -1,3 +1,4 @@
+import { Context } from "elysia";
 import getData from "../helper/getData";
 import template from "../helper/template";
 import style from "../themes/style";
@@ -10,34 +11,35 @@ export type UiConfig = {
   card_color: string;
 };
 
-export default async function readmeStats(req: any, res: any): Promise<any> {
+export default async function readmeStats(ctx: Context): Promise<any> {
   try {
-    let username = req.query.username;
+    let username = ctx.query.username;
 
-    let theme = style(req.query.theme);
+    let theme = style(ctx.query.theme);
 
     let uiConfig: UiConfig = {
-      text_color: req.query.textColor || theme.TextColor,
-      icon_color: req.query.iconColor || theme.IconColor,
-      rank_color: req.query.rankColor || theme.RankColor,
-      border_color: req.query.borderColor || theme.BorderColor,
-      card_color: req.query.cardColor || theme.BackgroundColor,
+      text_color: ctx.query.textColor || theme.TextColor,
+      icon_color: ctx.query.iconColor || theme.IconColor,
+      rank_color: ctx.query.rankColor || theme.RankColor,
+      border_color: ctx.query.borderColor || theme.BorderColor,
+      card_color: ctx.query.cardColor || theme.BackgroundColor,
     };
 
-    if (!username) return res.redirect("https://docs.hedystia.com/docs/category/github-stats");
+    if (!username) return ctx.redirect("https://docs.hedystia.com/stats/start");
 
-    var fetchStats = (await getData(username)) as any;
-    res.setHeader("Cache-Control", "s-maxage=1800, stale-while-revalidate");
+    var fetchStats = await getData(username);
+    ctx.set.headers["Cache-Control"] = "s-maxage=1800, stale-while-revalidate"
 
-    if (req.query.format === "json") {
-      res.json(fetchStats);
+    if (ctx.query.format === "json") {
+      return fetchStats;
     } else {
-      res.setHeader("Content-Type", "image/svg+xml");
+      ctx.set.headers["Content-Type"] = "image/svg+xmle"
       let svg = template(fetchStats, uiConfig);
-      res.send(svg);
+      return svg
     }
   } catch (error: any) {
-    res.setHeader("Cache-Control", "s-maxage=1800, stale-while-revalidate");
-    res.status(500).send(error.message);
+    ctx.set.headers["Cache-Control"] = "s-maxage=1800, stale-while-revalidate"
+    ctx.set.status = 500;
+    return error.message
   }
 }

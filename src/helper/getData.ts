@@ -1,7 +1,7 @@
-import millify from "millify";
+import { millify } from "millify";
+import { encode } from "node-base64-image";
 import basicFetch from "./basicFetch";
 import repositoryFetch from "./repositoryFetch";
-const base64ImageFetcher = require("node-base64-image");
 
 export type GetData = {
   username: string;
@@ -27,7 +27,7 @@ async function getData(username: string): Promise<GetData> {
   let output = {
     username: user.login,
     name: user.name,
-    pic: await base64ImageFetcher.encode(`${user.avatarUrl}&s=200`, {
+    pic: await encode(`${user.avatarUrl}&s=200`, {
       string: true,
     }),
     public_repos: millify(user.repositories.totalCount),

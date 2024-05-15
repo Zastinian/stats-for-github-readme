@@ -50,7 +50,7 @@ class ContributionRatings {
     const rank = this.calculateRank(totalCommits);
     const progress = this.calculateProgress(rank);
 
-    return {rank, progress};
+    return { rank, progress };
   }
 
   private calculateTotalCommits() {
