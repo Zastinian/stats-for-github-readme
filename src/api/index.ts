@@ -33,7 +33,7 @@ export default async function readmeStats(ctx: Context): Promise<any> {
     if (ctx.query.format === "json") {
       return fetchStats;
     } else {
-      ctx.set.headers["Content-Type"] = "image/svg+xmle"
+      ctx.set.headers["Content-Type"] = "image/svg+xml"
       let svg = template(fetchStats, uiConfig);
       return svg
     }
