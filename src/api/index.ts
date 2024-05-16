@@ -28,7 +28,7 @@ export default async function readmeStats(ctx: Context): Promise<any> {
     if (!username) return ctx.redirect("https://docs.hedystia.com/stats/start");
 
     const fetchStats = await getData(username);
-    ctx.set.headers["Cache-Control"] = "s-maxage=43200, stale-while-revalidate";
+    ctx.set.headers["Cache-Control"] = "s-maxage=1800, stale-while-revalidate";
 
     if (ctx.query.format === "json") {
       return fetchStats;
@@ -38,7 +38,7 @@ export default async function readmeStats(ctx: Context): Promise<any> {
       return svg;
     }
   } catch (error: any) {
-    ctx.set.headers["Cache-Control"] = "s-maxage=43200, stale-while-revalidate";
+    ctx.set.headers["Cache-Control"] = "s-maxage=1800, stale-while-revalidate";
     ctx.set.status = 500;
     return error.message;
   }

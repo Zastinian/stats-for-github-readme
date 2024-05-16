@@ -10,7 +10,7 @@ export default class Server extends Elysia {
     super();
     this.use(
       cors({
-        maxAge: 43200,
+        maxAge: 5,
       })
     );
     this.use(html());
