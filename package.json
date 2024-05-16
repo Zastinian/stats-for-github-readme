@@ -5,11 +5,9 @@
   "main": "src/server.ts",
   "scripts": {
     "dev": "bun run --watch src/server.ts",
-    "build": "tsc",
-    "build:linux": "bun build --compile --target=bun-linux-x64 src/server.ts --outfile stats",
+    "build": "bun build --compile --target=bun-linux-x64 src/server.ts --outfile stats",
     "build:windows": "bun build --compile --target=bun-windows-x64 src/server.ts --outfile stats",
-    "start": "bun ./dist/server.js",
-    "start:linux": "./stats",
+    "start": "./stats",
     "start:windows": "./stats.exe"
   },
   "author": "contact@zastinian.com",
