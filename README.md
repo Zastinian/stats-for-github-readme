@@ -23,7 +23,7 @@
 
 - Create a new branch.
 
-- Install pnpm: Make sure you have pnpm installed on your machine. You can follow the installation instructions provided on the [pnpm website](https://pnpm.io/installation#using-corepack).
+- Install bun: Make sure you have bun installed on your machine. You can follow the installation instructions provided on the [bun website](https://bun.sh/docs/installation#installing).
 
 - Install dependencies.
 
@@ -39,6 +39,6 @@
 
 ## Contributors:
 
-- [@Zastinian](https://github.com/Zastinian)
+<a href="https://github.com/Zastinian"><img src="https://github.com/Zastinian.png" width="100" height="100" alt="Zastinian" /></a>
 
 ---
