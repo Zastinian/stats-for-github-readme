@@ -12,7 +12,7 @@
 
 ## Links:
 
-- [Docs](https://docs.hedystia.com/docs/category/github-stats)
+- [Docs](https://docs.hedystia.com/stats/start/)
 - [Website](https://hedystia.com/)
 
 ---
