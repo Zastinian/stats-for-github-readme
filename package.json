@@ -5,9 +5,11 @@
   "main": "src/server.ts",
   "scripts": {
     "dev": "bun run --watch src/server.ts",
-    "build": "bun build --compile --target=bun-linux-x64 src/server.ts --outfile stats",
-    "build:windows": "bun build --compile --target=bun-windows-x64 src/server.ts --outfile stats",
-    "start": "./stats",
+    "build": "bun build --target=bun src/server.ts --outdir dist --minify-syntax --minify-identifiers",
+    "build:linux": "bun build --compile --target=bun-linux-x64 src/server.ts --outfile stats --minify-syntax --minify-identifiers",
+    "build:windows": "bun build --compile --target=bun-windows-x64 src/server.ts --outfile stats --minify-syntax --minify-identifiers",
+    "start": "bun ./dist/server.js",
+    "start:linux": "./stats",
     "start:windows": "./stats.exe"
   },
   "author": "contact@zastinian.com",
