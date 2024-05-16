@@ -19,12 +19,12 @@ export type GetData = {
 };
 
 async function getData(username: string): Promise<GetData> {
-  let user = await basicFetch(username);
-  let totalRepoPages = Math.ceil(user.repositories.totalCount / 100);
-  let userRepositories = await repositoryFetch(username, totalRepoPages);
+  const user = await basicFetch(username);
+  const totalRepoPages = Math.ceil(user.repositories.totalCount / 100);
+  const userRepositories = await repositoryFetch(username, totalRepoPages);
 
   if (!user.name) user.name = user.login;
-  let output = {
+  const output = {
     username: user.login,
     name: user.name,
     pic: await encode(`${user.avatarUrl}&s=200`, {

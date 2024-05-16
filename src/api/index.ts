@@ -13,11 +13,11 @@ export type UiConfig = {
 
 export default async function readmeStats(ctx: Context): Promise<any> {
   try {
-    let username = ctx.query.username;
+    const username = ctx.query.username;
 
-    let theme = style(ctx.query.theme);
+    const theme = style(ctx.query.theme);
 
-    let uiConfig: UiConfig = {
+    const uiConfig: UiConfig = {
       text_color: ctx.query.textColor || theme.TextColor,
       icon_color: ctx.query.iconColor || theme.IconColor,
       rank_color: ctx.query.rankColor || theme.RankColor,
@@ -27,7 +27,7 @@ export default async function readmeStats(ctx: Context): Promise<any> {
 
     if (!username) return ctx.redirect("https://docs.hedystia.com/stats/start");
 
-    var fetchStats = await getData(username);
+    const fetchStats = await getData(username);
     ctx.set.headers["Cache-Control"] = "s-maxage=1800, stale-while-revalidate"
 
     if (ctx.query.format === "json") {

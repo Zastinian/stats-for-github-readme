@@ -39,7 +39,7 @@ export interface ClosedIssues {
 }
 
 export default async function basicFetch(username: string): Promise<User> {
-  let data = await axios({
+  const data = await axios({
     method: "post",
     url: "https://api.github.com/graphql",
     headers: {
