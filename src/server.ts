@@ -11,13 +11,11 @@ export default class Server extends Elysia {
     this.use(
       cors({
         maxAge: 43200,
-        origin: true,
-        methods: ["GET"],
       })
     );
     this.use(html());
     this.get("/", (ctx) => ctx.redirect("https://docs.hedystia.com/stats/start"));
-    this.get("/api", (ctx) => readmeStats(ctx));
+    this.all("/api", (ctx) => readmeStats(ctx));
     this.listen(port);
     console.log(`Running at ${this.server?.hostname}:${this.server?.port}`);
   }
