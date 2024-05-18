@@ -10,7 +10,8 @@
     "build:windows": "bun build --compile --target=bun-windows-x64 src/server.ts --outfile stats --minify-syntax --minify-identifiers",
     "start": "bun ./dist/server.js",
     "start:linux": "./stats",
-    "start:windows": "./stats.exe"
+    "start:windows": "./stats.exe",
+    "deploy": "wrangler deploy --minify src/server.ts"
   },
   "author": "contact@zastinian.com",
   "license": "Apache-2.0",
@@ -32,15 +33,16 @@
   },
   "homepage": "https://github.com/Zastinian/stats-for-github-readme#readme",
   "dependencies": {
-    "@elysiajs/cors": "^1.0.2",
-    "@elysiajs/html": "^1.0.2",
-    "axios": "^1.6.8",
+    "buffer": "^6.0.3",
     "elysia": "^1.0.20",
     "millify": "^6.1.0",
     "node-base64-image": "^2.0.6"
   },
   "devDependencies": {
-    "bun-types": "latest",
-    "typescript": "^5.4.5"
+    "@cloudflare/workers-types": "^4.20240512.0",
+    "@types/bun": "^1.1.2",
+    "@types/node": "^20.12.12",
+    "typescript": "^5.4.5",
+    "wrangler": "^3.57.0"
   }
 }

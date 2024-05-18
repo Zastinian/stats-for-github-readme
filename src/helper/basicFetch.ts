@@ -1,5 +1,4 @@
-import axios from "axios";
-import getRandomToken from "./getRandomToken";
+import getToken from "./getToken";
 
 export interface User {
   name: string;
@@ -38,15 +37,15 @@ export interface ClosedIssues {
   totalCount: number;
 }
 
-export default async function basicFetch(username: string): Promise<User> {
-  const data = await axios({
-    method: "post",
-    url: "https://api.github.com/graphql",
+export default async function basicFetch(username: string, token: string): Promise<User> {
+  const response = await fetch("https://api.github.com/graphql", {
+    method: "POST",
     headers: {
       "User-Agent": "Zastinian/stats-for-github-readme",
-      Authorization: getRandomToken(true),
+      Authorization: getToken(token),
+      "Content-Type": "application/json",
     },
-    data: {
+    body: JSON.stringify({
       query: `query userInfo($username: String!) {
         user(login: $username) {
           name
@@ -88,13 +87,13 @@ export default async function basicFetch(username: string): Promise<User> {
           }
         }
       }`,
-      variables: {
-        username,
-      },
-    },
+      variables: { username },
+    }),
   });
 
-  if (data.data.errors?.length > 0) throw new Error(data.data.errors[0].message);
+  const data = await response.json() as any;
 
-  return data.data.data.user;
+  if (data.errors?.length > 0) throw new Error(data.errors[0].message);
+
+  return data.data.user;
 }

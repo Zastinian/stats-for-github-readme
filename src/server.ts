@@ -1,26 +1,30 @@
-import { Elysia } from "elysia";
-import { cors } from "@elysiajs/cors";
-import { html } from "@elysiajs/html";
+import { Env } from "bun";
+import { Elysia, Context } from "elysia";
 import readmeStats from "./api/index";
 
-const port: number = Number(process.env.PORT) || 3000;
-
-export default class Server extends Elysia {
-  constructor({ port }: { port: number }) {
-    super();
-    this.use(
-      cors({
-        maxAge: 5,
-      })
-    );
-    this.use(html());
-    this.get("/", (ctx) => ctx.redirect("https://docs.hedystia.com/stats/start"));
+export class Server extends Elysia {
+  constructor() {
+    super({
+      aot: false,
+    });
+    this.get("/", (ctx) => {
+      ctx.set.status = 404;
+      return { docs: "https://docs.hedystia.com/stats/start" };
+    });
     this.all("/api", (ctx) => readmeStats(ctx));
-    this.listen(port);
-    console.log(`Running at ${this.server?.hostname}:${this.server?.port}`);
   }
 }
 
-new Server({
-  port,
-});
+interface NewEnv extends Env {
+  GH_TOKEN: string;
+}
+
+const app = new Server();
+
+export default {
+  async fetch(request: Request, env: NewEnv, ctx: Context): Promise<Response> {
+    const newResponse = new Request(request);
+    newResponse.headers.set("Authorization", env.GH_TOKEN);
+    return await app.fetch(newResponse);
+  },
+};

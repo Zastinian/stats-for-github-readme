@@ -25,9 +25,14 @@ export default async function readmeStats(ctx: Context): Promise<any> {
       card_color: ctx.query.cardColor || theme.BackgroundColor,
     };
 
-    if (!username) return ctx.redirect("https://docs.hedystia.com/stats/start");
+    if (!username) {
+      ctx.set.status = 404;
+      return {
+        docs: "https://docs.hedystia.com/stats/start",
+      };
+    }
 
-    const fetchStats = await getData(username);
+    const fetchStats = await getData(username, ctx.headers["authorization"] || "");
     ctx.set.headers["Cache-Control"] = "s-maxage=1800, stale-while-revalidate";
 
     if (ctx.query.format === "json") {
@@ -40,6 +45,8 @@ export default async function readmeStats(ctx: Context): Promise<any> {
   } catch (error: any) {
     ctx.set.headers["Cache-Control"] = "s-maxage=1800, stale-while-revalidate";
     ctx.set.status = 500;
-    return error.message;
+    return {
+      error: error.message,
+    };
   }
 }

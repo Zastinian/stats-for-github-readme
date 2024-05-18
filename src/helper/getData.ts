@@ -1,5 +1,5 @@
 import { millify } from "millify";
-import { encode } from "node-base64-image";
+import { Buffer } from "buffer";
 import basicFetch from "./basicFetch";
 import repositoryFetch from "./repositoryFetch";
 
@@ -18,18 +18,31 @@ export type GetData = {
   all_data: any;
 };
 
-async function getData(username: string): Promise<GetData> {
-  const user = await basicFetch(username);
+async function getData(username: string, token: string) {
+  const user = await basicFetch(username, token);
   const totalRepoPages = Math.ceil(user.repositories.totalCount / 100);
-  const userRepositories = await repositoryFetch(username, totalRepoPages);
+  const userRepositories = await repositoryFetch(username, totalRepoPages, token);
 
   if (!user.name) user.name = user.login;
+
+  const response = await fetch(`${user.avatarUrl}&s=200`, {
+    headers: {
+      "User-Agent": "Zastinian/stats-for-github-readme",
+    },
+  });
+
+  if (!response.ok) {
+    throw new Error("Failed to fetch image");
+  }
+
+  const arrayBuffer = await response.arrayBuffer();
+  const base64Image = Buffer.from(arrayBuffer).toString("base64");
+  const imageUrl = `data:image/jpeg;base64,${base64Image}`;
+
   const output = {
     username: user.login,
     name: user.name,
-    pic: await encode(`${user.avatarUrl}&s=200`, {
-      string: true,
-    }),
+    pic: imageUrl,
     public_repos: millify(user.repositories.totalCount),
     followers: millify(user.followers.totalCount),
     following: millify(user.following.totalCount),
