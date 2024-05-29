@@ -1,5 +1,5 @@
-import { Env } from "bun";
-import { Elysia, Context } from "elysia";
+import type { Env } from "bun";
+import { Elysia, type Context } from "elysia";
 import readmeStats from "./api/index";
 
 export class Server extends Elysia {
@@ -22,7 +22,7 @@ interface NewEnv extends Env {
 const app = new Server();
 
 export default {
-  async fetch(request: Request, env: NewEnv, ctx: Context): Promise<Response> {
+  async fetch(request: Request, env: NewEnv, _ctx: Context): Promise<Response> {
     const newResponse = new Request(request);
     newResponse.headers.set("Authorization", env.GH_TOKEN);
     return await app.fetch(newResponse);
