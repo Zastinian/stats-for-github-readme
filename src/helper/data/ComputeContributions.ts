@@ -1,44 +1,64 @@
-const computeThisYearCommits = (contributions: { contributionCalendar: { totalContributions: any } }) => {
+interface ContributionDay {
+  contributionCount: number;
+}
+
+interface Week {
+  contributionDays: ContributionDay[];
+}
+
+interface Month {
+  totalWeeks: number;
+}
+
+interface ContributionCalendar {
+  totalContributions: number;
+  months: Month[];
+  weeks: Week[];
+}
+
+interface Contributions {
+  contributionCalendar: ContributionCalendar;
+  totalPullRequestContributions: number;
+  totalIssueContributions: number;
+  totalPullRequestReviewContributions: number;
+}
+
+const computeThisYearCommits = (contributions: Contributions): number => {
   return contributions.contributionCalendar.totalContributions;
 };
 
-const computeThisMonthCommits = (contributions: { contributionCalendar: { months: string | any[]; weeks: string | any[] } }) => {
-  const monthLength = contributions.contributionCalendar.months.length - 1;
+const computeThisMonthCommits = (contributions: Contributions): number => {
+  const months = contributions.contributionCalendar.months;
+  const weeks = contributions.contributionCalendar.weeks;
+  const monthLength = months.length - 1;
 
-  let monthWeeks = contributions.contributionCalendar.months[monthLength].totalWeeks;
-  let weeksLength = contributions.contributionCalendar.weeks.length - 1;
+  let monthWeeks = months[monthLength].totalWeeks;
+  let weeksLength = weeks.length - 1;
   let collectTotalCommits = 0;
 
-  do {
-    const weekDays = contributions.contributionCalendar.weeks[weeksLength].contributionDays;
-    const weekDaysLength = weekDays.length - 1;
-
-    for (let x = 0; x <= weekDaysLength; x++) {
-      collectTotalCommits += weekDays[x].contributionCount;
+  while (monthWeeks > 0) {
+    const weekDays = weeks[weeksLength].contributionDays;
+    for (const day of weekDays) {
+      collectTotalCommits += day.contributionCount;
     }
-
     weeksLength--;
     monthWeeks--;
-  } while (monthWeeks > 0);
-
-  return collectTotalCommits;
-};
-
-const computeThisWeekCommits = (contributions: { contributionCalendar: { weeks: string | any[] } }) => {
-  const weeksLength = contributions.contributionCalendar.weeks.length - 1;
-  const weekDays = contributions.contributionCalendar.weeks[weeksLength].contributionDays;
-  const weekDaysLength = weekDays.length - 1;
-
-  let collectTotalCommits = 0;
-
-  for (let x = 0; x <= weekDaysLength; x++) {
-    collectTotalCommits += weekDays[x].contributionCount;
   }
 
   return collectTotalCommits;
 };
 
-const ComputeContributions = (contributions: any) => {
+const computeThisWeekCommits = (contributions: Contributions): number => {
+  const weeks = contributions.contributionCalendar.weeks;
+  const weeksLength = weeks.length - 1;
+  const weekDays = weeks[weeksLength].contributionDays;
+
+  return weekDays.reduce((total, day) => {
+    return total + day.contributionCount;
+  }, 0);
+};
+
+const ComputeContributions = (contributions: Contributions) => {
   return {
     thisYear: computeThisYearCommits(contributions),
     thisMonth: computeThisMonthCommits(contributions),

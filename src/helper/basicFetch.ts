@@ -27,6 +27,29 @@ export interface Following {
 export interface ContributionsCollection {
   totalCommitContributions: number;
   restrictedContributionsCount: number;
+  totalIssueContributions: number;
+  totalPullRequestContributions: number;
+  totalPullRequestReviewContributions: number;
+  contributionCalendar: ContributionCalendar;
+}
+
+export interface ContributionCalendar {
+  totalContributions: number;
+  months: Month[];
+  weeks: Week[];
+}
+
+export interface Month {
+  totalWeeks: number;
+}
+
+export interface Week {
+  firstDay: string;
+  contributionDays: ContributionDay[];
+}
+
+export interface ContributionDay {
+  contributionCount: number;
 }
 
 export interface OpenedIssues {
@@ -35,6 +58,13 @@ export interface OpenedIssues {
 
 export interface ClosedIssues {
   totalCount: number;
+}
+
+interface GraphQLResponse {
+  data: {
+    user: User;
+  };
+  errors?: { message: string }[];
 }
 
 export default async function basicFetch(username: string, token: string): Promise<User> {
@@ -91,9 +121,10 @@ export default async function basicFetch(username: string, token: string): Promi
     }),
   });
 
-  const data = await response.json() as any;
-
-  if (data.errors?.length > 0) throw new Error(data.errors[0].message);
+  const data: GraphQLResponse = await response.json();
+  if (data.errors && data.errors.length > 0) {
+    throw new Error(data.errors[0].message);
+  }
 
   return data.data.user;
 }

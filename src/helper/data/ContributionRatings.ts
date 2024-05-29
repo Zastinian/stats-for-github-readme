@@ -61,9 +61,7 @@ class ContributionRatings {
     const baseScore = this.pullRequests * 3 + this.issues * 2 + this.codeReviews * 1.5 + totalCommits * 0.02;
 
     const rankPoints = baseScore * this.getRankModifier();
-    const rank = this.getRankFromPoints(rankPoints);
-
-    return rank;
+    return this.getRankFromPoints(rankPoints);
   }
 
   private getRankModifier() {
@@ -76,37 +74,38 @@ class ContributionRatings {
     return baseModifier * commitsThisYearModifier * commitsThisMonthModifier * commitsThisWeekModifier * allCommitsModifier;
   }
 
-  private getRankFromPoints(rankPoints: number) {
-    if (rankPoints >= 1000) {
-      return "S++";
-    } else if (rankPoints >= 800) {
-      return "S+";
-    } else if (rankPoints >= 600) {
-      return "S";
-    } else if (rankPoints >= 500) {
-      return "A++";
-    } else if (rankPoints >= 400) {
-      return "A+";
-    } else if (rankPoints >= 300) {
-      return "A";
-    } else if (rankPoints >= 250) {
-      return "B++";
-    } else if (rankPoints >= 200) {
-      return "B+";
-    } else if (rankPoints >= 150) {
-      return "B";
-    } else if (rankPoints >= 100) {
-      return "C++";
-    } else if (rankPoints >= 80) {
-      return "C+";
-    } else if (rankPoints >= 60) {
-      return "C";
-    } else if (rankPoints >= 40) {
-      return "D++";
-    } else if (rankPoints >= 20) {
-      return "D+";
-    } else {
-      return "D";
+  private getRankFromPoints(rankPoints: number): string {
+    switch (true) {
+      case rankPoints >= 1000:
+        return "S++";
+      case rankPoints >= 800:
+        return "S+";
+      case rankPoints >= 600:
+        return "S";
+      case rankPoints >= 500:
+        return "A++";
+      case rankPoints >= 400:
+        return "A+";
+      case rankPoints >= 300:
+        return "A";
+      case rankPoints >= 250:
+        return "B++";
+      case rankPoints >= 200:
+        return "B+";
+      case rankPoints >= 150:
+        return "B";
+      case rankPoints >= 100:
+        return "C++";
+      case rankPoints >= 80:
+        return "C+";
+      case rankPoints >= 60:
+        return "C";
+      case rankPoints >= 40:
+        return "D++";
+      case rankPoints >= 20:
+        return "D+";
+      default:
+        return "D";
     }
   }
 

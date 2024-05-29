@@ -1,6 +1,7 @@
 import { millify } from "millify";
+// biome-ignore lint/style/useNodejsImportProtocol: <explanation>
 import { Buffer } from "buffer";
-import basicFetch from "./basicFetch";
+import basicFetch, { type User } from "./basicFetch";
 import repositoryFetch from "./repositoryFetch";
 
 export type GetData = {
@@ -15,10 +16,10 @@ export type GetData = {
   total_issues: string | number;
   total_closed_issues: string | number;
   total_contributions: string | number;
-  all_data: any;
+  all_data: User;
 };
 
-async function getData(username: string, token: string) {
+async function getData(username: string, token: string): Promise<GetData> {
   const user = await basicFetch(username, token);
   const totalRepoPages = Math.ceil(user.repositories.totalCount / 100);
   const userRepositories = await repositoryFetch(username, totalRepoPages, token);
@@ -39,7 +40,7 @@ async function getData(username: string, token: string) {
   const base64Image = Buffer.from(arrayBuffer).toString("base64");
   const imageUrl = `data:image/jpeg;base64,${base64Image}`;
 
-  const output = {
+  const output: GetData = {
     username: user.login,
     name: user.name,
     pic: imageUrl,
