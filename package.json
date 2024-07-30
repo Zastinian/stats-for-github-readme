@@ -34,15 +34,15 @@
   "homepage": "https://github.com/Zastinian/stats-for-github-readme#readme",
   "dependencies": {
     "buffer": "^6.0.3",
-    "elysia": "1.0.27",
+    "elysia": "1.1.4",
     "millify": "^6.1.0",
     "node-base64-image": "^2.0.6"
   },
   "devDependencies": {
-    "@cloudflare/workers-types": "^4.20240620.0",
+    "@cloudflare/workers-types": "^4.20240725.0",
     "@types/bun": "^1.1.6",
-    "@types/node": "^20.14.10",
-    "typescript": "^5.5.3",
-    "wrangler": "3.63.1"
+    "@types/node": "^22.0.0",
+    "typescript": "^5.5.4",
+    "wrangler": "3.67.1"
   }
 }
