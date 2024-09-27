@@ -17,120 +17,144 @@ class ContributionRatings {
 		this.codeReviews = 0;
 	}
 
+	setAllCommits(commits: number) {
+		this.allCommits = commits;
+	}
+
+	setCommitsThisYear(commits: number) {
+		this.commitsThisYear = commits;
+	}
+
+	setCommitsThisMonth(commits: number) {
+		this.commitsThisMonth = commits;
+	}
+
+	setCommitsThisWeek(commits: number) {
+		this.commitsThisWeek = commits;
+	}
+
+	setPullRequests(prs: number) {
+		this.pullRequests = prs;
+	}
+
+	setIssues(issues: number) {
+		this.issues = issues;
+	}
+
+	setCodeReviews(reviews: number) {
+		this.codeReviews = reviews;
+	}
+
 	calculateRating() {
-		const totalScore = this.calculateTotalScore();
-		const rank = this.calculateRank(totalScore);
-		const progress = this.calculateProgress(totalScore);
+		const totalCommits = this.calculateTotalCommits();
+		const rank = this.calculateRank(totalCommits);
+		const progress = this.calculateProgress(rank);
 
 		return { rank, progress };
 	}
 
-	private calculateTotalScore() {
-		const commitScore = this.calculateCommitScore();
-		const prScore = this.pullRequests * 5;
-		const issueScore = this.issues * 3;
-		const reviewScore = this.codeReviews * 2;
-
-		return commitScore + prScore + issueScore + reviewScore;
-	}
-
-	private calculateCommitScore() {
-		const weekWeight = 1.5;
-		const monthWeight = 1.2;
-		const yearWeight = 1.1;
-		const allTimeWeight = 1.0;
-
+	private calculateTotalCommits() {
 		return (
-			this.commitsThisWeek * weekWeight +
-			this.commitsThisMonth * monthWeight +
-			this.commitsThisYear * yearWeight +
-			this.allCommits * allTimeWeight
+			this.allCommits +
+			this.commitsThisYear +
+			this.commitsThisMonth +
+			this.commitsThisWeek
 		);
 	}
 
-	private calculateRank(totalScore: number): string {
-		const ranks = [
-			{ min: 1000, rank: "S++" },
-			{ min: 800, rank: "S+" },
-			{ min: 600, rank: "S" },
-			{ min: 500, rank: "A++" },
-			{ min: 400, rank: "A+" },
-			{ min: 300, rank: "A" },
-			{ min: 250, rank: "B++" },
-			{ min: 200, rank: "B+" },
-			{ min: 150, rank: "B" },
-			{ min: 100, rank: "C++" },
-			{ min: 80, rank: "C+" },
-			{ min: 60, rank: "C" },
-			{ min: 40, rank: "D++" },
-			{ min: 20, rank: "D+" },
-			{ min: 0, rank: "D" },
-		];
+	private calculateRank(totalCommits: number) {
+		const baseScore =
+			this.pullRequests * 5 +
+			this.issues * 3 +
+			this.codeReviews * 2.5 +
+			totalCommits * 0.1;
 
-		for (const { min, rank } of ranks) {
-			if (totalScore >= min) return rank;
+		const rankPoints = baseScore * this.getRankModifier();
+		return this.getRankFromPoints(rankPoints);
+	}
+
+	private getRankModifier() {
+		const commitsThisYearModifier = 1.2;
+		const commitsThisMonthModifier = 1.4;
+		const commitsThisWeekModifier = 1.5;
+		const allCommitsModifier = 0.7;
+
+		return (
+			commitsThisYearModifier *
+			commitsThisMonthModifier *
+			commitsThisWeekModifier *
+			allCommitsModifier
+		);
+	}
+
+	private getRankFromPoints(rankPoints: number): string {
+		switch (true) {
+			case rankPoints >= 1200:
+				return "S++";
+			case rankPoints >= 1000:
+				return "S+";
+			case rankPoints >= 800:
+				return "S";
+			case rankPoints >= 700:
+				return "A++";
+			case rankPoints >= 600:
+				return "A+";
+			case rankPoints >= 500:
+				return "A";
+			case rankPoints >= 400:
+				return "B++";
+			case rankPoints >= 300:
+				return "B+";
+			case rankPoints >= 200:
+				return "B";
+			case rankPoints >= 150:
+				return "C++";
+			case rankPoints >= 100:
+				return "C+";
+			case rankPoints >= 80:
+				return "C";
+			case rankPoints >= 60:
+				return "D++";
+			case rankPoints >= 40:
+				return "D+";
+			default:
+				return "D";
 		}
-
-		return "D";
 	}
 
-	private calculateProgress(totalScore: number): number {
-		const currentRank = this.calculateRank(totalScore);
-		const nextRank = this.getNextRank(currentRank);
-
-		if (nextRank === currentRank) return 100;
-
-		const currentMin = this.getRankMinScore(currentRank);
-		const nextMin = this.getRankMinScore(nextRank);
-		const rangeSize = nextMin - currentMin;
-
-		const progress = ((totalScore - currentMin) / rangeSize) * 100;
-		return Math.min(Math.max(progress, 0), 100);
-	}
-
-	private getNextRank(currentRank: string): string {
-		const ranks = [
-			"D",
-			"D+",
-			"D++",
-			"C",
-			"C+",
-			"C++",
-			"B",
-			"B+",
-			"B++",
-			"A",
-			"A+",
-			"A++",
-			"S",
-			"S+",
-			"S++",
-		];
-		const currentIndex = ranks.indexOf(currentRank);
-		return currentIndex < ranks.length - 1
-			? ranks[currentIndex + 1]
-			: currentRank;
-	}
-
-	private getRankMinScore(rank: string): number {
-		const rankScores = {
-			D: 0,
-			"D+": 20,
-			"D++": 40,
-			C: 60,
-			"C+": 80,
-			"C++": 100,
-			B: 150,
-			"B+": 200,
-			"B++": 250,
-			A: 300,
-			"A+": 400,
-			"A++": 500,
-			S: 600,
-			"S+": 800,
-			"S++": 1000,
-		};
-		return rankScores[rank as keyof typeof rankScores] || 0;
+	private calculateProgress(rank: string) {
+		switch (rank) {
+			case "S++":
+				return 0;
+			case "S+":
+				return 10;
+			case "S":
+				return 20;
+			case "A++":
+				return 30;
+			case "A+":
+				return 40;
+			case "A":
+				return 50;
+			case "B++":
+				return 60;
+			case "B+":
+				return 70;
+			case "B":
+				return 80;
+			case "C++":
+				return 90;
+			case "C+":
+				return 100;
+			case "C":
+				return 110;
+			case "D++":
+				return 120;
+			case "D+":
+				return 130;
+			default:
+				return 140;
+		}
 	}
 }
 
